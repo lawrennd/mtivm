@@ -63,7 +63,7 @@ for dVal = [100 200 300 400 500 700];
       model = ivmOptimiseIVM(model, display);
       
       % Make predictions with this IVM
-      [void, out(:, phonemeToPred)] = ivmOut(XTest, model);
+      out(:, phonemeToPred) = ivmPosteriorMeanVar(model, XTest) + model.noise.bias;
       numTest = size(XTest, 1);
 
       % Compute binary classification error rate

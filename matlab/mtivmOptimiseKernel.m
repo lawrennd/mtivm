@@ -14,18 +14,21 @@ end
 options = foptions;
 if display
   options(1) = 1;
-  % Do gradient check if there aren't may parameters
-  if length(models.lntheta) > 10
+end
+options(14) = iters;
+
+params = kernExtractParam(models.task(1).kern);
+if options(1)
+  if length(params) > 20
     options(9) = 0;
   else
     options(9) = 1;
   end
 end
-options(14) = iters;
 
-params = kernExtractParam(models.task(1).kern);
+  
 params = scg('mtkernelObjective', params, options,...
     'mtkernelGradient', models, prior);
 for taskNo = 1:models.numTasks
-  models.task(taskNo).kern = kernExpandParam(params, models.task(1).kern)
+  models.task(taskNo).kern = kernExpandParam(params, models.task(1).kern);
 end
