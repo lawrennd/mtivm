@@ -2,7 +2,6 @@
 
 % MTIVM
 
-loadIvm
 seed = 1e4;
 display = 0;
 innerIters = 100; % Number of scg iterations
