@@ -2,11 +2,9 @@
 
 % MTIVM
 
-%/~
-importTool('ivm');
-%~/
+importTool('ivm', 0.3);
+loadIvm
 seed = 1e4;
-prior = 0;
 display = 0;
 innerIters = 100; % Number of scg iterations
 outerIters = 4;

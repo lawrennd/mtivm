@@ -1,14 +1,13 @@
-function models = mtivmOptimiseKernel(models, prior, display, iters);
+function models = mtivmOptimiseKernel(models, display, iters);
 
 % MTIVMOPTIMISEKERNEL Optimise the kernel parameters.
 
-if nargin < 4
+% MTIVM
+
+if nargin < 3
   iters = 500;
-  if nargin < 3
+  if nargin < 2
     display = 1;
-    if nargin < 2
-      prior = 0;
-    end
   end
 end
 options = foptions;
@@ -27,8 +26,8 @@ if options(1)
 end
 
   
-params = scg('mtkernelObjective', params, options,...
-    'mtkernelGradient', models, prior);
+params = scg('mtivmKernelObjective', params, options,...
+    'mtivmKernelGradient', models);
 for taskNo = 1:models.numTasks
   models.task(taskNo).kern = kernExpandParam(models.task(1).kern, params);
 end

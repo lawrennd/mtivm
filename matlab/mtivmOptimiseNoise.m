@@ -1,16 +1,13 @@
-function models = mtivmOptimiseNoise(models, prior, display, iters);
+function models = mtivmOptimiseNoise(models, display, iters);
 
 % MTIVMOPTIMISENOISE Optimise the noise parameters.
 
 % MTIVM
 
-if nargin < 4
+if nargin < 3
   iters = 500;
-  if nargin < 3
+  if nargin < 2
     display = 1;
-    if nargin < 2
-      prior = 0;
-    end
   end
 end
 options = foptions;
@@ -21,9 +18,8 @@ options(14) = iters;
 
 for taskNo = 1:models.numTasks
   models.task(taskNo) = optimiseParams('noise', 'scg', ...
-                                       'negIvmLogLikelihood', ...
-                                       'negIvmGradientNoise', ...
+                                       'ivmNegLogLikelihood', ...
+                                       'ivmNegGradientNoise', ...
                                        options, ...
-                                       models.task(taskNo), ...
-                                       prior);
+                                       models.task(taskNo));
 end

@@ -53,7 +53,7 @@ for k = 1:models.d
   if display
     logLikelihood = 0;
     for taskNo = 1:models.numTasks
-      logLikelihood = logLikelihood + ivmLogLikelihood(model);
+      logLikelihood = logLikelihood + ivmLogLikelihood(models.task(taskNo));
     
     end
     fprintf('%ith inclusion, remaining log Likelihood %2.4f', ...

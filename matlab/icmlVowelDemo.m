@@ -1,11 +1,9 @@
 % ICMLVOWELDEMO Try the IVM for classification of vowels.
 
-%/~
-importTool('ivm');
-%~/
+% MTIVM
 
 seed = 1e4;
-prior = 0;
+optimiseNoise = 0;
 display = 0;
 innerIters = 200; % Number of scg iterations
 outerIters = 4;
@@ -20,7 +18,7 @@ numSpeakers = length(vowelBySpeakerX);
 generateVowelData;
 numSpeakers = length(vowelBySpeakerX);
 
-for dVal = [50 75 100 150 200 250 300]; 
+for dVal = [50 75 100 150 200]; 
 
   % Make results repeatable
   rand('seed', seed)
@@ -67,12 +65,14 @@ for dVal = [50 75 100 150 200 250 300];
       
       model = ivmRun(XTrain, yTrain, kernelType, ...
 			noiseType, selectionCriterion, dVal, ...
-			prior, display, innerIters, outerIters);
+			optimiseNoise, display, innerIters, outerIters);
 
       % Create ivm using learned kernel parameters.
+      kern = model.kern;
+      noise = model.noise;
       model = ivm(XNewSpeaker, yNewSpeaker, kernelType, noiseType, selectionCriterion, size(XNewSpeaker, 1));
-      model.kern = kernExpandParam(model.kern, kernExtractParam(models.task(1).kern));
-      model.noise = noiseExpandParam(model.noise, noiseExtractParam(models.task(1).noise));
+      model.kern = kern;
+      model.noise = noise;
       model = ivmOptimiseIVM(model, display);
 
       % Make predictions with this IVM.

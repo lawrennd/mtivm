@@ -1,12 +1,9 @@
 % ICMLMTVOWELDEMO Recreate ICML experiment of multi-task IVM for classification of vowels.
 
 % MTIVM
-%/~
-importTool('ivm');
-%~/
 
 seed = 1e4;
-prior = 0;
+optimiseNoise = 0;
 display = 0;
 innerIters = 200; % Number of scg iterations
 outerIters = 5;
@@ -57,7 +54,7 @@ for dVal = [50 75 100 150 200 250];
 
       models = mtivmRun(XTrain, yTrain, kernelType, ...
 			noiseType, selectionCriterion, dVal, ...
-			prior, display, innerIters, outerIters);
+			optimiseNoise, display, innerIters, outerIters);
       
       % Create ivm using learned kernel parameters.
       model = ivm(XNewSpeaker, yNewSpeaker, kernelType, noiseType, ...

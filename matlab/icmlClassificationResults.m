@@ -6,7 +6,7 @@ lineWidth = 2;
 markerSize = 10;
 seed = 1e4;
 
-dVals = [50 75 100 150 200 250 300];
+dVals = [50 75 100 150 200];
 mError = zeros(size(dVals));
 stdError = zeros(size(dVals));
 t = zeros(size(dVals));

@@ -1,4 +1,4 @@
-function models = mtivmOptimise(models, prior, display, innerIters, ...
+function models = mtivmOptimise(models, optimiseNoise, display, innerIters, ...
 			     outerIters);
 
 % MTIVMOPTIMISE Optimise the multi-task IVM.
@@ -8,6 +8,10 @@ function models = mtivmOptimise(models, prior, display, innerIters, ...
 % Run IVM
 for i = 1:outerIters
   models = mtivmOptimiseIVM(models, display);
-  models = mtivmOptimiseNoise(models, prior, display, innerIters);
-  models = mtivmOptimiseKernel(models, prior, display, innerIters);
+  models = mtivmOptimiseKernel(models, display, innerIters);
+  if optimiseNoise
+    models = mtivmOptimiseIVM(models, display);
+    models = mtivmOptimiseNoise(models, display, innerIters);
+  end
+  mtivmDisplay(models);
 end

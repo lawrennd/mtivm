@@ -11,7 +11,7 @@ kernelType = 'sqexp';
 noiseType = 'gaussian';
 selectionCriterion = 'entropy';
 display = 0;
-prior = 0;
+optimiseNoise = 0;
 seed = 1e3;
 
 % Run the multi-task IVM on the data.
@@ -31,7 +31,7 @@ for dnum = 1:length(dVec)
     models.task(1).kern.whiteVariance = eps; 
     models.task(1).kern.biasVariance = 10;
     
-    models = mtivmOptimise(models, prior, display, innerIters, outerIters);
+    models = mtivmOptimise(models, optimiseNoise, display, innerIters, outerIters);
     paramIVM{dnum, trials} = kernExtractParam(models.task(1).kern);
     timeIVM(dnum, trials) = cputime - initTime;
     KLIVM(dnum, trials) = 0;
@@ -70,7 +70,7 @@ for sampNum = 1:length(sampsVec);
     end
     initTime = cputime;
     models =  gpMtRun(Xsamp, ysamp, kernelType, noiseType, ...
-                      initParam, prior, display, iters);
+                      initParam, optimiseNoise, display, iters);
     paramSub{sampNum, trials} = kernExtractParam(models.task(1).kern);
     timeSub(sampNum, trials) = cputime - initTime;
     KLSub(dnum, trials) = 0;
