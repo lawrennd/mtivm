@@ -25,10 +25,10 @@ for k = 1:models.d
   
   for taskNo = 1:numTasks
     if length(models.task(taskNo).J) > 0
-      [indexSelect(taskNo), infoChange(taskNo)] = selectPoint(models.task(taskNo));
+      [indexSelect(taskNo), infoChange(taskNo)] = ivmSelectPoint(models.task(taskNo));
     else
       infoChange(taskNo) = NaN;
-      indexSelect(taskNo) = [];
+      indexSelect(taskNo) = NaN;
     end
   end
   switch models.selectionCriterion
@@ -36,7 +36,11 @@ for k = 1:models.d
     [trackInfoChange(k) , taskSelect] = max(infoChange);
    case 'random'
       taskSelect = ceil(rand(1)*numTasks);
+      while(isempty(models.task(taskSelect).J))
+        taskSelect = ceil(rand(1)*numTasks);
+      end
       trackInfoChange(k) = infoChange(taskSelect);
+        
   end
   jPos = indexSelect(taskSelect);
   i = models.task(taskSelect).J(jPos);
@@ -47,35 +51,33 @@ for k = 1:models.d
   models.task(taskSelect) = ivmAddPoint(models.task(taskSelect), i);
 
   if display
+    logLikelihood = 0;
     for taskNo = 1:models.numTasks
-      logLikelihoods = log(ivmLikelihoods(models.task(taskNo)));
-      dLogLikelihood(k) = dLogLikelihood(k) ...
-	  + sum(sum(logLikelihoods));
-      logLikelihoodRemain(k) = logLikelihoodRemain(k) ...
-	  + sum(sum(logLikelihoods(models.task(taskNo).J, :)));
+      logLikelihood = logLikelihood + ivmLogLikelihood(model);
+    
     end
     fprintf('%ith inclusion, remaining log Likelihood %2.4f', ...
-	    k, logLikelihoodRemain(k))
+              k, logLikelihood)
     falsePositives(k) = 0;
     truePositives(k) = 0;
     totalNeg = 0;
     totalPos = 0;
     for taskNo = 1:models.numTasks
       switch models.task(taskNo).noise.type
-       case {'probit', 'heaviside'}
+       case {'probit'}
 	for i = 1:size(models.task(taskNo).y, 2)
 	  falsePositives(k) = falsePositives(k) ...
 	      + sum(...
-		  sign(models.task(taskNo).mu(models.task(taskNo).J, i) ...
+		  sign(models.task(taskNo).mu(:, i) ...
 		       +models.task(taskNo).noise.bias(i)) ...
-		  ~=models.task(taskNo).y(models.task(taskNo).J, i) ...
-		  & models.task(taskNo).y(models.task(taskNo).J, i)==-1);
+		  ~=models.task(taskNo).y(:, i) ...
+		  & models.task(taskNo).y(:, i)==-1);
 	  truePositives(k) = truePositives(k) ...
 	      + sum(...
-		  sign(models.task(taskNo).mu(models.task(taskNo).J, i) ...
+		  sign(models.task(taskNo).mu(:, i) ...
 		       +models.task(taskNo).noise.bias(i)) ...
-		  ~=models.task(taskNo).y(models.task(taskNo).J, i) ...
-		  & models.task(taskNo).y(models.task(taskNo).J, i)==1);
+		  ~=models.task(taskNo).y(:, i) ...
+		  & models.task(taskNo).y(:, i)==1);
 	end
 	totalNeg = totalNeg + sum(sum(models.task(taskNo).y==-1));
 	totalPos = totalPos + sum(sum(models.task(taskNo).y==1));

@@ -1,4 +1,4 @@
-% ICMLTOYSINE A small demo of the multi-task IVM.
+% ICMLTOYSINE A small demo for icml paper of the multi-task IVM.
 
 % MTIVM
 

@@ -1,7 +1,5 @@
 % ICMLCLASSIFICATIONRESULTS Plot the classificaiton results for ICML paper.
 
-% MTIVM
-
 fontName = 'times';
 fontSize = 32;
 lineWidth = 2;
@@ -25,7 +23,7 @@ set(linesOne, 'linewidth', lineWidth);
 set(linesOne, 'markersize', markerSize);
 set(gca, 'xscale', 'log')
 
-dVals = [100 200 300 400 500 700];
+dVals = [50 75 100 150 200 250];
 mError = zeros(size(dVals));
 stdError = zeros(size(dVals));
 t = zeros(size(dVals));
@@ -42,7 +40,7 @@ linesTwo = errorbar(t, mError, stdError, 'bo-')
 set(linesTwo, 'linewidth', lineWidth);
 set(linesTwo, 'markersize', markerSize);
 
-dVals = [100 200 300 400 500 700];
+dVals = [100 200 300 400 500];
 mError = zeros(size(dVals));
 stdError = zeros(size(dVals));
 t = zeros(size(dVals));
@@ -74,4 +72,4 @@ pos(2) = pos(2)*2;
 pos(4) = 1-pos(2) - 0.05;
 set(gca, 'position', pos)
 
-print -deps ../tex/diagrams/classificationComparison.eps
+%print -deps ../tex/diagrams/classificationComparison.eps

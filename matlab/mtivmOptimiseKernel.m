@@ -30,5 +30,5 @@ end
 params = scg('mtkernelObjective', params, options,...
     'mtkernelGradient', models, prior);
 for taskNo = 1:models.numTasks
-  models.task(taskNo).kern = kernExpandParam(params, models.task(1).kern);
+  models.task(taskNo).kern = kernExpandParam(models.task(1).kern, params);
 end

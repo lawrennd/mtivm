@@ -1,21 +1,23 @@
 % ICMLSAMPVOWELDEMO Try sub sampling for the point sets for classification of vowels.
 
-% MTIVM
+%/~
+importTool('ivm');
+%~/
 
 seed = 1e4;
 prior = 0;
 display = 0;
-innerIters = 200; % Number of scg iterations
+innerIters = 400; % Number of scg iterations
 outerIters = 1;
 
-kernelType = 'ARD';
+kernelType = 'ard';
 noiseType = 'probit';
 selectionCriterion = 'random';
 
 generateVowelData;
 numSpeakers = length(vowelBySpeakerX);
 
-for dVal = [100 200 300 400 500 700]; 
+for dVal = [700]; 
 
   % Make results repeatable
   rand('seed', seed)
@@ -58,8 +60,8 @@ for dVal = [100 200 300 400 500 700];
       
       % Create ivm using learned kernel parameters.
       model = ivm(XNewSpeaker, yNewSpeaker, kernelType, noiseType, selectionCriterion, size(XNewSpeaker, 1));
-      model.kern = kernExpandParam(kernExtractParam(models.task(1).kern), ...
-                                   model.kern);
+      model.kern = kernExpandParam(model.kern, kernExtractParam(models.task(1).kern));
+
       model = ivmOptimiseIVM(model, display);
       
       % Make predictions with this IVM

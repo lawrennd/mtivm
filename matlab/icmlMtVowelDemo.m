@@ -1,33 +1,24 @@
-% ICMLMTVOWELDEMO Try the multi-task IVM for classification of vowels.
+% ICMLMTVOWELDEMO Recreate ICML experiment of multi-task IVM for classification of vowels.
 
 % MTIVM
+%/~
+importTool('ivm');
+%~/
 
 seed = 1e4;
 prior = 0;
 display = 0;
-innerIters = 100; % Number of scg iterations
-outerIters = 4;
+innerIters = 200; % Number of scg iterations
+outerIters = 5;
 
-%kernelType = 'ARD';
-kernelType = {'rbfard', 'linard', 'bias', 'white'};
-% constrain ARD input scale parameters in the two kernels to equal one another.
-tieStructure = {[3 14], ...
-                [4 15], ...
-                [5 16], ...
-                [6 17], ...
-                [7 18], ...
-                [8 19], ...
-                [9 20], ...
-                [10 21], ...
-                [11 22], ...
-                [12 23]};
+kernelType = 'ard';
 noiseType = 'probit';
 selectionCriterion = 'entropy';
 
 generateVowelData;
 numSpeakers = length(vowelBySpeakerX);
 
-for dVal = [100 200 300 400 500 700]; 
+for dVal = [50 75 100 150 200 250];
 
   % Make results repeatable
   rand('seed', seed)
@@ -66,15 +57,13 @@ for dVal = [100 200 300 400 500 700];
 
       models = mtivmRun(XTrain, yTrain, kernelType, ...
 			noiseType, selectionCriterion, dVal, ...
-			prior, display, innerIters, outerIters, tieStructure);
+			prior, display, innerIters, outerIters);
       
       % Create ivm using learned kernel parameters.
       model = ivm(XNewSpeaker, yNewSpeaker, kernelType, noiseType, ...
                   selectionCriterion, size(XNewSpeaker, 1));
-      model.kern = cmpndTieParameters(model.kern, tieStructure);
-
-      model.kern = kernExpandParam(kernExtractParam(models.task(1).kern), ...
-                                   model.kern);
+      
+      model.kern = kernExpandParam(model.kern, kernExtractParam(models.task(1).kern));
       model = ivmOptimiseIVM(model, display);
       
       % Make predictions with this IVM

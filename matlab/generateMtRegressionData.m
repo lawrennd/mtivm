@@ -1,6 +1,5 @@
 % GENERATEMTREGRESSIONDATA Tries to load a point-set regression sampled data set otherwise generates it.
 
-% MTIVM
 
 try
   load mtRegressionData.mat 
@@ -21,22 +20,29 @@ catch
   if noFile
     fprintf('File not available ... generating data ... this will take some time\n');
     
-    kernelType = 'rbf';
     numIn = 4;
     numTasks = 4;
     N = 2000;
     numDataPerTask = N*ones(1, numTasks);
     numTasksTest = 10;
     NTest = 500;
-   numDataPerTaskTest = NTest*ones(1, numTasksTest);
-   % Theta is of the form [rbfInverseWidth, rbfMultiplier, noiseVariance, biasVariance]
-   trueTheta = [1 1 100 0];
-   trueTheta = thetaConstrain(trueTheta);
-   [X, y] = mtSampleData(trueTheta, kernelType, numIn, numTasks, numDataPerTask);
-   [testX, testY] = mtSampleData(trueTheta, kernelType, numIn, numTasksTest, numDataPerTaskTest);
+    numDataPerTaskTest = NTest*ones(1, numTasksTest);
 
-   save('mtRegressionData.mat', 'trueTheta', 'X', ...
-	'y', 'testX', 'testY')
+    trueKern.inputDimension = numIn;
+    trueKern.Kstore = [];
+    trueKern.diagK = [];
+    trueKern.type = 'sqexp';
+    trueKern = kernParamInit(trueKern);
+    trueKern.rbfVariance = 1;
+    trueKern.inverseWidth = 1;
+    trueKern.whiteVariance = 0.01;
+    trueKern.biasVariance = eps;
+
+    [X, y] = mtSampleData(trueKern, numIn, numTasks, numDataPerTask);
+    [testX, testY] = mtSampleData(trueKern, numIn, numTasksTest, numDataPerTaskTest);
+    
+    save('mtRegressionData.mat', 'trueKern', 'X', ...
+         'y', 'testX', 'testY')
   else
     error(lasterr)
   end

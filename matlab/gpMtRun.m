@@ -2,10 +2,11 @@ function models = gpMtRun(X, y, kernelType, noiseType, theta, prior, display, it
 
 % GPMTRUN Run a multi-task GP.
 
-% MTIVM
 
 models = mtivm(X, y, kernelType, noiseType, 'none');
 
-models = mtivmInit(models);
+for i = 1:length(models)
+  models.task(i) = mtivmInit(models.task(i));
+end
 models = mtivmOptimiseNoise(models, prior, display, iters);
 models = mtivmOptimiseKernel(models, prior, display, iters);

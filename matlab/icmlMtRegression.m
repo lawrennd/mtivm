@@ -1,6 +1,4 @@
-% ICMLMTREGRESSION Time the point-set IVM and simple sub-sampling.
-
-% MTIVM
+% ICMLMTREGRESSION Time the multi-task IVM and simple sub-sampling.
 
 
 %/~
@@ -9,15 +7,14 @@ importTool('ivm');
 
 generateMtRegressionData
 numTrials = 10;
-initParam = [10 10 10 10];
-kernelType = 'rbf';
+kernelType = 'sqexp';
 noiseType = 'gaussian';
 selectionCriterion = 'entropy';
 display = 0;
 prior = 0;
 seed = 1e3;
 
-% Run the Point set IVM on the data.
+% Run the multi-task IVM on the data.
 innerIters = 50;
 outerIters = 5;
 dVec = [200 250 300 400 500 600 700 800 900 1000]; 
@@ -29,23 +26,34 @@ for dnum = 1:length(dVec)
   for trials = 1:numTrials
     initTime = cputime;
     models = mtivm(X, y, kernelType, noiseType, selectionCriterion, d);
-    models.task(1).kern = kernExpandParam(log(initParam), models.task(1).kern);
+    models.task(1).kern.inverseWidth = 10;
+    models.task(1).kern.rbfVariance = 10;
+    models.task(1).kern.whiteVariance = eps; 
+    models.task(1).kern.biasVariance = 10;
+    
     models = mtivmOptimise(models, prior, display, innerIters, outerIters);
     paramIVM{dnum, trials} = kernExtractParam(models.task(1).kern);
     timeIVM(dnum, trials) = cputime - initTime;
-
-    testModels = mtivm(testX, testY, kernelType, noiseType, 'none', []);
-    testModels.lnparam = models.lnparam;
-    testModels = mtivmInit(testModels);
-    llIVM(dnum, trials) = -mtkernelObjective(log(paramIVM{dnum, trials}), testModels, prior); %testX, ...
-%					  testY, 0);
+    KLIVM(dnum, trials) = 0;
+    for i = 1:length(testX)
+      K1 = kernCompute(trueKern, testX{i});
+      [logdet1] = logdet(K1);
+      ivmKern = kernExpandParam(trueKern, paramIVM{dnum, trials});
+      K2 = kernCompute(ivmKern, testX{i});
+      [logdet2, U2] = logdet(K2);
+      invK2 = pdinv(K2, U2);
+      
+      val = -logdet1 + logdet2 +trace(K1*invK2) - size(K1, 1);
+      KLIVM(dnum, trials) = KLIVM(dnum, trials) +  val/2;
+    end
     fprintf('Trial iteration %d complete\n', trials)
-    fprintf('Param %2.4f \n', paramIVM{dnum, trials})
-    fprintf('Likelihood %2.4f Time %2.4f\n', llIVM(dnum, trials), timeIVM(dnum, trials))
+    kernDisplay(ivmKern);
+    fprintf('KL %2.4f Time %2.4f\n', KLIVM(dnum, trials), timeIVM(dnum, trials))
   end
+  save('icmlMtRegressionResults.mat', 'timeIVM', 'paramIVM', 'dVec', 'KLIVM')
 end
 
-% Simply sub-sample the data and fit a point set Gaussian Process.
+% Simply sub-sample the data and fit a multi-task Gaussian Process.
 iters = 200;
 sampsVec = [150 200 250 300 350 400 450 500 550 600];
 numTasks = length(X);
@@ -62,26 +70,34 @@ for sampNum = 1:length(sampsVec);
     end
     initTime = cputime;
     models =  gpMtRun(Xsamp, ysamp, kernelType, noiseType, ...
-					initParam, prior, display, iters);
-    paramSub{sampNum, trials} = exp(models.lnparam);
-    testModels = mtivm(testX, testY, kernelType, noiseType, 'none', []);
-    testModels.lnparam = models.lnparam;
-    testModels = mtivmInit(testModels);
-    llSub(sampNum, trials) = -mtkernelObjective(log(paramSub{sampNum, trials}), testModels, prior); %testX, ...
-
+                      initParam, prior, display, iters);
+    paramSub{sampNum, trials} = kernExtractParam(models.task(1).kern);
     timeSub(sampNum, trials) = cputime - initTime;
-    llSub(sampNum, trials) = -mtkernelObjective(log(paramSub{sampNum, ...
-		    trials}), testModels);
+    KLSub(dnum, trials) = 0;
+    for i = 1:length(testX)
+      K1 = kernCompute(trueKern, testX{i});
+      [logdet1] = logdet(K1);
+      subKern = kernExpandParam(trueKern, paramSub{dnum, trials});
+      K2 = kernCompute(subKern, testX{i});
+      [logdet2, U2] = logdet(K2);
+      invK2 = pdinv(K2, U2);
+      
+      val = -logdet1 + logdet2 +trace(K1*invK2) - size(K1, 1);
+      KLSub(dnum, trials) = KLSub(dnum, trials) + val/2;
+    
+    end
     fprintf('Trial iteration %d complete\n', trials)
-    fprintf('Param %2.4f \n', paramSub{sampNum, trials})
-    fprintf('Likelihood %2.4f Time %2.4f\n', llSub(sampNum, trials), timeSub(sampNum, trials))
-    %    displayTasks(Xsamp, ysamp, paramSub);
+    kernDisplay(ivmKern);
+    fprintf('KL %2.4f Time %2.4f\n', KLSub(sampNum, trials), timeSub(sampNum, trials))
   end
+  save('icmlMtRegressionResults.mat', 'timeIVM', 'timeSub', 'paramIVM', ...
+       'paramSub', 'dVec', 'sampsVec', 'KLIVM', 'KLSub')
 end
 
-
-save('icmlMtRegressionResults.mat', 'timeIVM', 'timeSub', 'llIVM', 'llSub', 'paramIVM', ...
-     'paramSub', 'dVec', 'sampsVec')
+% COmpute KL divergences
 
 
-icmlRegressionResults
+
+
+
+icmlMtRegressionResults
