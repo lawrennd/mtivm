@@ -2,7 +2,6 @@
 
 % MTIVM
 
-importTool('ivm', 0.3);
 loadIvm
 seed = 1e4;
 display = 0;
@@ -12,8 +11,6 @@ outerIters = 4;
 kernelType = 'rbf';
 noiseType = 'gaussian';
 selectionCriterion = 'entropy';
-
-
 
 d = 15; 
 
@@ -35,17 +32,17 @@ fontSize = 28;
 
 figure(1)
 [xvals, yvals] = fplot('cos(pi/2*x/10)', [-15 15]);
-a = plot(xvals, yvals);
+a = plot(xvals, yvals, 'linewidth', 1, 'color', [0 1 0]);
 set(a, 'linewidth', 2)
 hold on
 figure(2)
-[xvals, yvals] = fplot('sin(pi/2*x/10)', [-15 15], 'linewidth', 2);
-a = plot(xvals, yvals);
+[xvals, yvals] = fplot('sin(pi/2*x/10)', [-15 15]);
+a = plot(xvals, yvals, 'linewidth', 1, 'color', [0 1 0]);
 set(a, 'linewidth', 2)
 hold on
 figure(3)
-[xvals, yvals] = fplot('-sin(pi/2*x/10)', [-15 15], 'linewidth', 2);
-a = plot(xvals, yvals);
+[xvals, yvals] = fplot('-sin(pi/2*x/10)', [-15 15]);
+a = plot(xvals, yvals, 'linewidth', 1, 'color', [0 1 0]);
 set(a, 'linewidth', 2)
 hold on
 
@@ -72,12 +69,12 @@ for taskNo = 1:3
     %    b = text(x+offset, yval, num2str(kVals(i)));
 %    set(b, 'fontName', fontName, 'fontSize', fontSize);
   end
-    zeroaxes(gca, 0.0025, 28, 'times')
+    zeroAxes(gca, 0.025, 18, 'arial')
 %    ppos = get(gcf, 'paperposition')
 %    ppos(4) = ppos(4)/2;
 %    set(gcf, 'paperposition', ppos)
     pos = get(gca, 'position')
     pos(4) = pos(4)/2;
     set(gca, 'position', pos)
-    print('-deps', ['../tex/diagrams/sine' num2str(taskNo)])
+    %print('-depsc', ['../tex/diagrams/sine' num2str(taskNo)])
 end

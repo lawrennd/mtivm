@@ -1,9 +1,6 @@
 % ICMLMTREGRESSION Time the multi-task IVM and simple sub-sampling.
 
-
-%/~
-importTool('ivm');
-%~/
+% MTIVM
 
 generateMtRegressionData
 numTrials = 10;
@@ -70,7 +67,7 @@ for sampNum = 1:length(sampsVec);
     end
     initTime = cputime;
     models =  gpMtRun(Xsamp, ysamp, kernelType, noiseType, ...
-                      initParam, optimiseNoise, display, iters);
+                      optimiseNoise, display, iters);
     paramSub{sampNum, trials} = kernExtractParam(models.task(1).kern);
     timeSub(sampNum, trials) = cputime - initTime;
     KLSub(dnum, trials) = 0;
@@ -94,7 +91,7 @@ for sampNum = 1:length(sampsVec);
        'paramSub', 'dVec', 'sampsVec', 'KLIVM', 'KLSub')
 end
 
-% COmpute KL divergences
+% Compute KL divergences
 
 
 

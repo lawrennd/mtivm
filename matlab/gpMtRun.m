@@ -1,4 +1,4 @@
-function models = gpMtRun(X, y, kernelType, noiseType, theta, optimiseNoise, display, iters)
+function models = gpMtRun(X, y, kernelType, noiseType, optimiseNoise, display, iters)
 
 % MTIVM
 
@@ -7,7 +7,7 @@ function models = gpMtRun(X, y, kernelType, noiseType, theta, optimiseNoise, dis
 models = mtivm(X, y, kernelType, noiseType, 'none');
 
 for i = 1:length(models)
-  models.task(i) = mtivmInit(models.task(i));
+  models.task(i) = ivmInit(models.task(i));
 end
 models = mtivmOptimiseKernel(models, display, iters);
 if optimiseNoise

@@ -1,5 +1,7 @@
 % ICMLCLASSIFICATIONRESULTS Plot the classificaiton results for ICML paper.
 
+% MTIVM
+
 fontName = 'times';
 fontSize = 32;
 lineWidth = 2;

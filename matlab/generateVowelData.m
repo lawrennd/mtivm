@@ -1,5 +1,7 @@
 % GENERATEVOWELDATA Produces vowel data in matlab format.
 
+% MTIVM
+
 % /* Speakers are Andrew, Bill, David, Mark, Jo, Kate, Penny, Rose, Mike, Nick
 % **		Rich, Tim, Sarah, Sue, Wendy. 
 % ** Segments are 0, 1, 2, 3, 4, 5.

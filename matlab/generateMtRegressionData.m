@@ -1,5 +1,6 @@
-% GENERATEMTREGRESSIONDATA Tries to load a point-set regression sampled data set otherwise generates it.
+% GENERATEMTREGRESSIONDATA Tries to load a muti-task regression sampled data set otherwise generates it.
 
+% MTIVM
 
 try
   load mtRegressionData.mat 
