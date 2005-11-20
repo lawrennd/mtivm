@@ -10,5 +10,7 @@ end
 f = 0;
 numTasks = length(models.task);
 for taskNo = 1:numTasks
-  f = f + ivmKernelObjective(params, models.task(taskNo));
+  if(length(models.task(taskNo).I)>0)
+    f = f + ivmKernelObjective(params, models.task(taskNo));
+  end
 end

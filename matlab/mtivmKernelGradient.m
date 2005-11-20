@@ -10,6 +10,8 @@ end
 
 g = zeros(size(params));
 for taskNo = 1:models.numTasks
-  g = g + ivmKernelGradient(params, models.task(taskNo));
+  if(length(models.task(taskNo).I)>0) % It's possible that this task wasn't used.
+    g = g + ivmKernelGradient(params, models.task(taskNo));
+  end
 end
   
