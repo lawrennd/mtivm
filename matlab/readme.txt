@@ -8,6 +8,12 @@ This code relies on the IVM toolbox vs 0.31. You can use your username and passw
 
 Finally you will also need the NETLAB toolbox (http://www.ncrg.aston.ac.uk/netlab/) in your path.
 
+
+Version 0.141
+-------------
+
+Just a freshen up release before talks given in Madrid. Mainly to redo plots for toy problem etc..
+
 Version 0.14
 ------------
 
