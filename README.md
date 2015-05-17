@@ -9,20 +9,20 @@ Release Information
 
 **Current release is 0.142**.
 
-As well as downloading the MTIVM software you need to obtain the toolboxes specified below. **These can be downloaded using the *same* password you get from registering for the MTIVM software.**
+As well as downloading the MTIVM software you need to obtain the toolboxes specified below. 
 
-|----------------------------------------------------------------------------|-------------|
-| **Toolbox**                                                                | **Version** |
-| [IVM](http://inverseprobability.com/ivm/downloadFiles/vrs0p4)             | 0.4         |
-| [NETLAB](http://inverseprobability.com/netlab/downloadFiles/vrs3p3)       | 3.3         |
-| [NDLUTIL](http://inverseprobability.com/ndlutil/downloadFiles/vrs0p161)   | 0.161       |
-| [KERN](http://inverseprobability.com/kern/downloadFiles/vrs0p223)         | 0.223       |
-| [NOISE](http://inverseprobability.com/noise/downloadFiles/vrs0p14)        | 0.14        |
-| [PRIOR](http://inverseprobability.com/prior/downloadFiles/vrs0p22)        | 0.22        |
-| [OPTIMI](http://inverseprobability.com/optimi/downloadFiles/vrs0p132)     | 0.132       |
-| [DATASETS](http://inverseprobability.com/datasets/downloadFiles/vrs0p136) | 0.136       |
-| [MLTOOLS](http://inverseprobability.com/mltools/downloadFiles/vrs0p1311)  | 0.1311      |
-| [DRAWING](http://inverseprobability.com/drawing/downloadFiles/vrs0p111)   | 0.111       |
+| **Toolbox**                                  | **Version** |
+|----------------------------------------------|-------------|
+| [IVM](/ivm/downloadFiles/vrs0p4)             | 0.4         |
+| [NETLAB](/netlab/downloadFiles/vrs3p3)       | 3.3         |
+| [NDLUTIL](/ndlutil/downloadFiles/vrs0p161)   | 0.161       |
+| [KERN](/kern/downloadFiles/vrs0p223)         | 0.223       |
+| [NOISE](/noise/downloadFiles/vrs0p14)        | 0.14        |
+| [PRIOR](/prior/downloadFiles/vrs0p22)        | 0.22        |
+| [OPTIMI](/optimi/downloadFiles/vrs0p132)     | 0.132       |
+| [DATASETS](/datasets/downloadFiles/vrs0p136) | 0.136       |
+| [MLTOOLS](/mltools/downloadFiles/vrs0p1311)  | 0.1311      |
+| [DRAWING](/drawing/downloadFiles/vrs0p111)   | 0.111       |
 
 Fixes to icmlVowelDemo.
 
