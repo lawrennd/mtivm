@@ -1,0 +1,6 @@
+# These are files that should be packaged for the drawing software
+dir: html
+~/mlprojects/mtivm/html/index.html
+~/mlprojects/mtivm/html/demSine1.png
+~/mlprojects/mtivm/html/demSine2.png
+~/mlprojects/mtivm/html/demSine3.png

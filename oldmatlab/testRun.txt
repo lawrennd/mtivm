@@ -1,0 +1,19 @@
+
+                              < M A T L A B >
+                  Copyright 1984-2001 The MathWorks, Inc.
+                       Version 6.1.0.450 Release 12.1
+                                May 18 2001
+
+ 
+  To get started, type one of these: helpwin, helpdesk, or demo.
+  For product information, visit www.mathworks.com.
+ 
+??? Name is nonexistent or not a directory
+
+Error in ==> /share/mlhome/neil/mlprojects/mtivm/matlab/startup.m
+On line 4  ==> cd mlprojects/mtivm/matlab
+
+Error in ==> /usr/local/pkg/matlab-6.0/toolbox/local/matlabrc.m
+On line 201  ==>   startup
+
+>> 

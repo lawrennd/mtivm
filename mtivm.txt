@@ -1,0 +1,1 @@
+Multi-task learning with the informative vector machine.

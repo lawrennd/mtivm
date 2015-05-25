@@ -3,14 +3,15 @@
 % MTIVM
 
 seed = 1e4;
-optimiseNoise = 0;
-display = 0;
-innerIters = 200; % Number of scg iterations
-outerIters = 4;
+options = ivmOptions();
+options.display = 0;
+options.kernIters = 200; % Number of scg iterations
+options.noiseIters = 0;
+options.extIters = 4;
+options.kern = 'ard';
+options.noise = 'probit';
+options.selectionCriterion = 'entropy';
 
-kernelType = 'ard';
-noiseType = 'probit';
-selectionCriterion = 'entropy';
 
 generateVowelData;
 numSpeakers = length(vowelBySpeakerX);
@@ -62,11 +63,9 @@ for dVal = [50 75 100 150 200];
       yNewSpeaker = yTest(1:6:end, :);
       yTest(1:6:end, :) = [];
       
+      options.numActive = dVal;
+      model = ivmRun(XTrain, yTrain, options);
       
-      model = ivmRun(XTrain, yTrain, kernelType, ...
-			noiseType, selectionCriterion, dVal, ...
-			optimiseNoise, display, innerIters, outerIters);
-
       % Create ivm using learned kernel parameters.
       kern = model.kern;
       noise = model.noise;

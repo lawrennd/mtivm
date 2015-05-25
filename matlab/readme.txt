@@ -8,6 +8,10 @@ This code relies on the IVM toolbox vs 0.31. You can use your username and passw
 
 Finally you will also need the NETLAB toolbox (http://www.ncrg.aston.ac.uk/netlab/) in your path.
 
+Version 0.142
+-------------
+
+Fixes to icmlVowelDemo.
 
 Version 0.141
 -------------
