@@ -1,0 +1,35 @@
+
+
+ models = gpMtRun(X, y, kernelType, noiseType, optimiseNoise, display, iters)
+
+
+
+
+
+
+
+
+
+
+ models = mtivm(X, y, kernelType, noiseType, selectionCriterion, d)
+
+ mtivmDisplay(models);
+
+ g = mtivmKernelGradient(params, models)
+
+ f = mtivmKernelObjective(params, models)
+
+ models = mtivmOptimise(models, optimiseNoise, display, innerIters, ...
+% 			     outerIters);
+
+ models = mtivmOptimiseIVM(models, display)
+
+ models = mtivmOptimiseKernel(models, display, iters);
+
+ models = mtivmOptimiseNoise(models, display, iters);
+
+ models = mtivmRun(XTrain, yTrain, kernelType, noiseType, ...
+%                            selectionCriterion, dVal, optimiseNoise, display, ...
+%                            innerIters, outerIters, ...
+%                            noiseTieStructure, kernelTieStructure)
+

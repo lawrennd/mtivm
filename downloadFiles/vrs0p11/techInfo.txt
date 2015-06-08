@@ -1,0 +1,19 @@
+
+
+ models = mtivm(X, y, kernelType, noiseType, selectionCriterion, d)
+
+ models = mtivmOptimise(models, prior, display, innerIters, ...
+% 			     outerIters);
+
+ models = mtivmOptimiseIVM(models, display)
+
+ models = mtivmOptimiseNoise(models, prior, display, iters);
+
+ models = mtivmRun(XTrain, yTrain, kernelType, noiseType, ...
+%                            selectionCriterion, dVal, prior, display, ...
+%                            innerIters, outerIters, tieStructure)
+
+ g = mtkernelGradient(params, models, prior)
+
+ f = mtkernelObjective(params, models, prior)
+
